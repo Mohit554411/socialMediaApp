@@ -1,0 +1,15 @@
+{
+  "name": "socialmediaapp",
+  "version": "1.0.0",
+  "description": "This is a social networking platform. This platform should enable users to create posts with text and media.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mohit Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-ejs-layouts": "^2.5.1"
+  }
+}
