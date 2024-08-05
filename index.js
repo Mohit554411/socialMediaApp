@@ -13,7 +13,7 @@ app.use(express.static('src/views'));
 app.set('views',path.join(path.resolve(), 'src','views'));
 
 app.get('/', (req, res) => {
-    res.render('layout');
+    res.render('login');
 });
 
 app.listen(3000,()=>{
