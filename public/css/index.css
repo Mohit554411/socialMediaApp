@@ -49,11 +49,8 @@ html {
   -webkit-animation: slide-right 2s cubic-bezier(0.550, 0.055, 0.675, 0.190) infinite alternate;
   animation: slide-right 2s cubic-bezier(0.550, 0.055, 0.675, 0.190) infinite alternate;
 }
-.loginContainer .loginSection{
-  display: none;
-}
 .loginContainer .signUpSection1{
-  /* display: none; */
+  display: none;
 }
 .loginContainer .signUpSection2{
   display: none;
@@ -105,7 +102,7 @@ input::placeholder {
   width: 100%;
 }
 
-.password-wrapper #togglePassword {
+.password-wrapper .togglePassword {
   position: absolute;
   top: 50%;
   right: 0.625rem;
@@ -118,6 +115,7 @@ input::placeholder {
 .options label {
   display: flex;
   margin-bottom: 0;
+  align-items: flex-start;
 }
 
 .change-password {
@@ -125,6 +123,7 @@ input::placeholder {
   margin-top: 0.3125rem;
   font-size: clamp(0.8rem, 0.8vw, 1rem);
   color: #555;
+  cursor: pointer;
 }
 
 .change-password strong {
@@ -222,6 +221,49 @@ input::placeholder {
 .termsCond p{
   margin-top: 3.5rem;
 }
+.showSignUpBtn,.showLoginBtn{
+  cursor: pointer;
+}
+.backButton,.backToLogin{
+  display: block;
+  margin: auto;
+  cursor: pointer;
+  text-align: center;
+  -webkit-animation: bounce-in-bottom 2s cubic-bezier(0.550, 0.055, 0.675, 0.190) infinite alternate;
+	        animation: bounce-in-bottom 2s cubic-bezier(0.550, 0.055, 0.675, 0.190) infinite alternate;
+}
+.forgotPasswordSec,.otpInputField,.newPasswordField,.updatePasswordBtn{
+  display: none;
+}
+@-webkit-keyframes bounce-in-bottom {
+  0% {
+    -webkit-transform: translateY(20px);
+            transform: translateY(20px);
+  }
+  50% {
+    -webkit-transform: translateY(0px);
+            transform: translateY(0px);
+  }
+  100% {
+    -webkit-transform: translateY(20px);
+            transform: translateY(20px);
+  }
+}
+@keyframes bounce-in-bottom {
+  0% {
+    -webkit-transform: translateY(20px);
+            transform: translateY(20px);
+  }
+  50% {
+    -webkit-transform: translateY(0);
+            transform: translateY(0);
+  }
+  100% {
+    -webkit-transform: translateY(20px);
+            transform: translateY(20px);
+  }
+}
+
 @-webkit-keyframes slide-left {
   0% {
     -webkit-transform: translateX(0);
@@ -283,9 +325,10 @@ input::placeholder {
     flex: 1 1 100%;
     position: absolute;
     height: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    margin: auto;
     margin-right: 0;
   }
 }
