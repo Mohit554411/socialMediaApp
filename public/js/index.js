@@ -12,6 +12,7 @@ if (window.location.pathname === '/') {
         // password view or hide 
         document.querySelectorAll('.togglePassword').forEach(ele=>{
             ele.addEventListener('mouseover', (e) => {
+                console.log(e.target);
                 const password = e.target.previousElementSibling;
                 password.type = 'text';
             });

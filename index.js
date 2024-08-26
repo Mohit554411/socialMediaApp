@@ -20,7 +20,10 @@ app.get('/', (req, res) => {
 });
 app.post('/login',userController.getLogin);
 app.post('/signUp',userController.getRegister);
-app.post('/verifyEmail')
+app.post('/verifyEmail');
+app.get('/home',(req,res)=>{
+    res.render('index');
+});
 app.listen(3000,()=>{
     console.log('Server is running on port 3000');
-})
+});
