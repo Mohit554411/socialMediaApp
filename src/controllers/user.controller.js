@@ -5,12 +5,17 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import sendMail from "../middlewares/email.middleware.js";
 import { generateSixDigitOTP } from "../middlewares/otpGenerator.middleware.js";
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 export default class UserController {
     getLogin(req, res) {
         const result = UserModel.fetchUserLoginDetails(req.body);
         if (result) {
+            const jwtToken = jwt.sign({ email: result.email }, process.env.SECRET_KEY, { expiresIn: '1h' });
+            res.cookie('jwtToken', jwtToken);
             res.status(200).json({ user: result, success: 'login successful' });
         }
         else {

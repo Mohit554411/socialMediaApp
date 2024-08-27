@@ -554,8 +554,50 @@ span{
 .post-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 10px;
   margin-bottom: 10px;
+}
+.post-header div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+.post-header div .postEditIcon{
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  transition: all 0.2s ease-in-out;
+}
+.post-header div .postEditCon{
+  display: none;
+  position: absolute;
+  top: 25px;
+  right: 0;
+  width: 100px;
+  height: auto;
+  background-color: #f1f1f6;
+  box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  box-sizing: border-box;
+  text-align: center;
+}
+ .postEditCon>div{
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+  &:hover{
+    background-color: #ffffff;
+    border-radius: 8px;
+    transform: scale(1.1);
+  }
 }
 .post-header div h4{
   margin: 0;
@@ -574,7 +616,12 @@ span{
   margin: 10px 0;
   text-align: left;
 }
-
+.post-edit-style{
+  border: none;
+  background-color: #f1f1f6;
+  padding: 12px 8px;
+  border-radius: 8px;
+}
 .post-img {
   width: 100%;
   border-radius: 5px;
