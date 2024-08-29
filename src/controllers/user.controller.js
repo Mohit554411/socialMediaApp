@@ -14,8 +14,10 @@ export default class UserController {
     getLogin(req, res) {
         const result = UserModel.fetchUserLoginDetails(req.body);
         if (result) {
+            console.log(result);
             const jwtToken = jwt.sign({ email: result.email }, process.env.SECRET_KEY, { expiresIn: '1h' });
             res.cookie('jwtToken', jwtToken);
+            res.cookie('userName', result.userName);
             res.status(200).json({ user: result, success: 'login successful' });
         }
         else {

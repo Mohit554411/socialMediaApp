@@ -286,13 +286,14 @@
                         </span>Post</div>
                 </div>
             </div>
-            <div class="post">
+            <% posts.forEach(post=>{ %>
+            <div class="post" id="post.id">
                 <div class="post-header">
                     <div>
                         <img src="images/profilePic.png" alt="John Carter" class="post-user-img">
                         <section>
-                            <h4>John Carter</h4>
-                            <p>4 hours ago</p>
+                            <h4><%= post.userName %></h4>
+                            <p><%= post.time %></p>
                         </section>
                     </div>
                     <div>
@@ -306,8 +307,8 @@
                     </div>
                 </div>
                 <div class="post-content">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                    <img src="/images/carouselPic/image3.webp" alt="Post Image" class="post-img">
+                    <p><%= post.content %></p>
+                    <img src="/images/postUploadFile/<%=post.fileName%>" alt="Post Image" class="post-img">
                 </div>
                 <div class="post-footer">
                     <div class="like"><span>
@@ -321,7 +322,7 @@
                                         fill="#1C274C"></path>
                                 </g>
                             </svg>
-                        </span>1.2k</div>
+                        </span><%= post.likes %></div>
                     <div class="comment"> <span>
                             <svg width="24px" height="24px" viewBox="0 0 32 32" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -343,7 +344,7 @@
                                     </g>
                                 </g>
                             </svg>
-                        </span>200</div>
+                        </span><%= post.comments %></div>
                     <div class="share"> <span>
                             <svg fill="#000000" width="24px" height="24px" viewBox="0 0 16 16" id="share-16px"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -355,83 +356,11 @@
                                         transform="translate(23 -0.001)"></path>
                                 </g>
                             </svg>
-                        </span>17</div>
+                        </span><%= post.share %></div>
                     <input type="text" placeholder="Write your comment" class="comment-input">
                 </div>
             </div>
-            <div class="post">
-                <div class="post-header">
-                    <div>
-                        <img src="images/profilePic.png" alt="John Carter" class="post-user-img">
-                        <section>
-                            <h4>John Carter</h4>
-                            <p>4 hours ago</p>
-                        </section>
-                    </div>
-                    <div>
-                        <span class="postEditIcon">
-                            <svg  width="24px" height="24px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-three-dots-vertical"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"></path> </g></svg>
-                        </span>
-                        <div class="postEditCon">
-                            <div class="postEdit">Edit</div>
-                            <div class="postDel">Delete</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="post-content">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                    <img src="/images/carouselPic/image8.webp" alt="Post Image" class="post-img">
-                </div>
-                <div class="post-footer">
-                    <div class="like"><span>
-                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M5.62436 4.4241C3.96537 5.18243 2.75 6.98614 2.75 9.13701C2.75 11.3344 3.64922 13.0281 4.93829 14.4797C6.00072 15.676 7.28684 16.6675 8.54113 17.6345C8.83904 17.8642 9.13515 18.0925 9.42605 18.3218C9.95208 18.7365 10.4213 19.1004 10.8736 19.3647C11.3261 19.6292 11.6904 19.7499 12 19.7499C12.3096 19.7499 12.6739 19.6292 13.1264 19.3647C13.5787 19.1004 14.0479 18.7365 14.574 18.3218C14.8649 18.0925 15.161 17.8642 15.4589 17.6345C16.7132 16.6675 17.9993 15.676 19.0617 14.4797C20.3508 13.0281 21.25 11.3344 21.25 9.13701C21.25 6.98614 20.0346 5.18243 18.3756 4.4241C16.7639 3.68739 14.5983 3.88249 12.5404 6.02065C12.399 6.16754 12.2039 6.25054 12 6.25054C11.7961 6.25054 11.601 6.16754 11.4596 6.02065C9.40166 3.88249 7.23607 3.68739 5.62436 4.4241ZM12 4.45873C9.68795 2.39015 7.09896 2.10078 5.00076 3.05987C2.78471 4.07283 1.25 6.42494 1.25 9.13701C1.25 11.8025 2.3605 13.836 3.81672 15.4757C4.98287 16.7888 6.41022 17.8879 7.67083 18.8585C7.95659 19.0785 8.23378 19.292 8.49742 19.4998C9.00965 19.9036 9.55954 20.3342 10.1168 20.6598C10.6739 20.9853 11.3096 21.2499 12 21.2499C12.6904 21.2499 13.3261 20.9853 13.8832 20.6598C14.4405 20.3342 14.9903 19.9036 15.5026 19.4998C15.7662 19.292 16.0434 19.0785 16.3292 18.8585C17.5898 17.8879 19.0171 16.7888 20.1833 15.4757C21.6395 13.836 22.75 11.8025 22.75 9.13701C22.75 6.42494 21.2153 4.07283 18.9992 3.05987C16.901 2.10078 14.3121 2.39015 12 4.45873Z"
-                                        fill="#1C274C"></path>
-                                </g>
-                            </svg>
-                        </span>1.2k</div>
-                    <div class="comment"> <span>
-                            <svg width="24px" height="24px" viewBox="0 0 32 32" version="1.1"
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <title>comment-1</title>
-                                    <desc>Created with Sketch Beta.</desc>
-                                    <defs> </defs>
-                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"
-                                        sketch:type="MSPage">
-                                        <g id="Icon-Set" sketch:type="MSLayerGroup"
-                                            transform="translate(-100.000000, -255.000000)" fill="#000000">
-                                            <path
-                                                d="M116,281 C114.832,281 113.704,280.864 112.62,280.633 L107.912,283.463 L107.975,278.824 C104.366,276.654 102,273.066 102,269 C102,262.373 108.268,257 116,257 C123.732,257 130,262.373 130,269 C130,275.628 123.732,281 116,281 L116,281 Z M116,255 C107.164,255 100,261.269 100,269 C100,273.419 102.345,277.354 106,279.919 L106,287 L113.009,282.747 C113.979,282.907 114.977,283 116,283 C124.836,283 132,276.732 132,269 C132,261.269 124.836,255 116,255 L116,255 Z"
-                                                id="comment-1" sketch:type="MSShapeGroup"> </path>
-                                        </g>
-                                    </g>
-                                </g>
-                            </svg>
-                        </span>200</div>
-                    <div class="share"> <span>
-                            <svg fill="#000000" width="24px" height="24px" viewBox="0 0 16 16" id="share-16px"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path id="Path_38" data-name="Path 38"
-                                        d="M-12.121,10.879a2.976,2.976,0,0,0-.292.355l-4.73-2.364A2.985,2.985,0,0,0-17,8a2.985,2.985,0,0,0-.143-.87l4.73-2.364a2.976,2.976,0,0,0,.292.355A2.989,2.989,0,0,0-10,6a2.989,2.989,0,0,0,2.121-.878A2.982,2.982,0,0,0-7,3,2.982,2.982,0,0,0-7.879.879a3,3,0,0,0-4.242,0A2.978,2.978,0,0,0-13,3a2.985,2.985,0,0,0,.143.87l-4.73,2.364a2.975,2.975,0,0,0-.292-.355,3,3,0,0,0-4.242,0A2.978,2.978,0,0,0-23,8a2.978,2.978,0,0,0,.879,2.121A2.989,2.989,0,0,0-20,11a2.989,2.989,0,0,0,2.121-.878,2.976,2.976,0,0,0,.292-.355l4.73,2.364A2.985,2.985,0,0,0-13,13a2.978,2.978,0,0,0,.879,2.121A2.989,2.989,0,0,0-10,16a2.989,2.989,0,0,0,2.121-.878A2.982,2.982,0,0,0-7,13a2.982,2.982,0,0,0-.879-2.121A3,3,0,0,0-12.121,10.879ZM-12,3a1.986,1.986,0,0,1,.586-1.414A1.993,1.993,0,0,1-10,1a1.993,1.993,0,0,1,1.414.585A1.986,1.986,0,0,1-8,3a1.986,1.986,0,0,1-.586,1.414,2,2,0,0,1-2.828,0A1.986,1.986,0,0,1-12,3Zm-9.414,6.414A1.986,1.986,0,0,1-22,8a1.986,1.986,0,0,1,.586-1.414A1.993,1.993,0,0,1-20,6a1.993,1.993,0,0,1,1.414.585A1.986,1.986,0,0,1-18,8a1.986,1.986,0,0,1-.586,1.414A2,2,0,0,1-21.414,9.414Zm10,5A1.986,1.986,0,0,1-12,13a1.986,1.986,0,0,1,.586-1.414A1.993,1.993,0,0,1-10,11a1.993,1.993,0,0,1,1.414.585A1.986,1.986,0,0,1-8,13a1.986,1.986,0,0,1-.586,1.414A2,2,0,0,1-11.414,14.414Z"
-                                        transform="translate(23 -0.001)"></path>
-                                </g>
-                            </svg>
-                        </span>17</div>
-                    <input type="text" placeholder="Write your comment" class="comment-input">
-                </div>
-            </div>
+            <% }) %>
         </main>
         <aside class="right-sidebar">
             <div class="birthdays">

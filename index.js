@@ -33,9 +33,7 @@ app.get('/', (req, res) => {
 app.post('/login',userController.getLogin);
 app.post('/signUp',userController.getRegister);
 app.post('/verifyEmail');
-app.get('/home',jwtMiddleware,(req,res)=>{
-    res.render('index');
-});
+app.get('/home',jwtMiddleware,postController.getToHomePage);
 app.post('/uploadPost',postUploadFile.single('Postfile'),postController.uploadPost);
 
 app.listen(3000,()=>{
