@@ -227,10 +227,13 @@
             <div class="post-box">
                 <div class="post-write">
                     <img src="images/profilePic.png" alt="User" class="user-img">
-                    <input type="text" placeholder="What's on your mind?" class="post-input">
+                    <input id="post-content" type="text" placeholder="What's on your mind?" class="post-input">
+                </div>
+                <div class="imgae-preview">
+                    <img id="preview" src="#" alt="Image Preview" style="display: none;" />
                 </div>
                 <div class="post-actions">
-                    <div><span>
+                    <div id="post-image-uploader"><span>
                             <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -248,7 +251,7 @@
                                         stroke-linejoin="round"></path>
                                 </g>
                             </svg>
-                        </span>Photo</div>
+                        </span>Photo<input type="file" id="fileImageInput" accept="image/*" style="display: none;" /></div>
                     <div><span>
                             <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -266,7 +269,7 @@
                                 </g>
                             </svg>
                         </span>Video</div>
-                    <div><span>
+                    <div class="post-upload"><span>
                             <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

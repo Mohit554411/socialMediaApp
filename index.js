@@ -4,13 +4,15 @@ import path from 'path';
 import UserController from './src/controllers/user.controller.js';
 import jwtMiddleware from './src/middlewares/jwt.middleware.js';
 import cookieParser from "cookie-parser";
+import PostController from './src/controllers/post.controller.js';
 import dotenv from 'dotenv';
+import { postUploadFile } from './src/middlewares/uploadPostFile.middleware.js';
 dotenv.config();
 
 const app = express();
 
 const userController = new UserController();
-
+const postController = new PostController();
 app.set('view engine','ejs');
 app.use(express.json());
 app.use(cookieParser());
@@ -34,6 +36,8 @@ app.post('/verifyEmail');
 app.get('/home',jwtMiddleware,(req,res)=>{
     res.render('index');
 });
+app.post('/uploadPost',postUploadFile.single('Postfile'),postController.uploadPost);
+
 app.listen(3000,()=>{
     console.log('Server is running on port 3000');
 });
