@@ -35,7 +35,9 @@ app.post('/signUp',userController.getRegister);
 app.post('/verifyEmail');
 app.get('/home',jwtMiddleware,postController.getToHomePage);
 app.post('/uploadPost',postUploadFile.single('Postfile'),postController.uploadPost);
-
+app.post('/togglePostLike',postController.togglePostLikes);
+app.post('./deletePost',postController.deletePost);
+app.get('/logout',userController.logout);
 app.listen(3000,()=>{
     console.log('Server is running on port 3000');
 });

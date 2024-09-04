@@ -10,14 +10,14 @@ if (window.location.pathname === '/') {
         }
         setInterval(showNextSlide, 4000);// Change slide every 3 seconds
         // password view or hide 
-        document.querySelectorAll('.togglePassword').forEach(ele=>{
+        document.querySelectorAll('.togglePassword').forEach(ele => {
             ele.addEventListener('mouseover', (e) => {
                 console.log(e.target);
                 const password = e.target.previousElementSibling;
                 password.type = 'text';
             });
         });
-        document.querySelectorAll('.togglePassword').forEach(ele=>{
+        document.querySelectorAll('.togglePassword').forEach(ele => {
             ele.addEventListener('mouseout', (e) => {
                 const password = e.target.previousElementSibling;
                 password.type = 'password';
@@ -105,105 +105,124 @@ if (window.location.pathname === '/') {
                 });
         });
         // forgot password form event
-        document.querySelector('.forgotPassForm').addEventListener('submit',e=>{
+        document.querySelector('.forgotPassForm').addEventListener('submit', e => {
             e.preventDefault();
             const formData = document.querySelector('.forgotPassForm');
             const email = Object.fromEntries(new FormData(formData).entries());
-            fetch('verifyEmail',{
+            fetch('verifyEmail', {
                 method: 'POST',
-                headers: {  
-                    'Content-Type':'application/Json'
+                headers: {
+                    'Content-Type': 'application/Json'
                 },
                 body: JSON.stringify(email)
-            }).then(res=>res.json())
-            .then(res=>{
-                if(res.success){
-                    alert(res.success);
-                    document.querySelector('.otpInputField').style.display = 'block';
-                }else if(res.error){
-                    alert(res.error);
-                }
-            }).catch(error=>{
-                console.log(error);
-            })
+            }).then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        alert(res.success);
+                        document.querySelector('.otpInputField').style.display = 'block';
+                    } else if (res.error) {
+                        alert(res.error);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
         });
     });
 }
-else if(window.location.pathname === '/home'){
-    document.addEventListener('DOMContentLoaded',function(){
+else if (window.location.pathname === '/home') {
+    document.addEventListener('DOMContentLoaded', function () {
         // const user = JSON.parse(localStorage.getItem('user'));
         // document.querySelector('.userName').textContent = user.name;
 
-        document.querySelectorAll('.postEditIcon').forEach(postEdit => {
-            const post = postEdit.nextElementSibling;
-            post.style.display = 'none'; // Initially hide all posts
-        
-            postEdit.addEventListener('click', e => {
+        function attachedEditEvent() {
+            document.querySelectorAll('.postEditIcon').forEach(postEdit => {
+                const post = postEdit.nextElementSibling;
+                post.style.display = 'none'; // Initially hide all posts
+
+                postEdit.addEventListener('click', e => {
+                    document.querySelectorAll('.postEditIcon').forEach(postEdit => {
+                        const post = postEdit.nextElementSibling;
+                        if (post.style.display === 'block') {
+                            post.style.display = 'none';
+                        }
+                    });
+                    e.stopPropagation();
+                    const post = e.currentTarget.nextElementSibling;
+                    if (post.style.display === 'block') {
+                        post.style.display = 'none';
+                    } else {
+                        post.style.display = 'block';
+                    }
+                });
+            });
+
+            document.addEventListener('click', () => {
                 document.querySelectorAll('.postEditIcon').forEach(postEdit => {
                     const post = postEdit.nextElementSibling;
                     if (post.style.display === 'block') {
                         post.style.display = 'none';
                     }
                 });
-                e.stopPropagation();
-                const post = e.currentTarget.nextElementSibling;
-                if (post.style.display === 'block') {
-                    post.style.display = 'none';
-                } else {
-                    post.style.display = 'block';
-                }
+                document.querySelector('.logOutIcon').style.display = 'none';
             });
-        });
-        
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.postEditIcon').forEach(postEdit => {
-                const post = postEdit.nextElementSibling;
-                if (post.style.display === 'block') {
-                    post.style.display = 'none';
-                }
-            });
-        });
 
-        document.querySelectorAll('.postEdit').forEach(editButton => {
-            editButton.addEventListener('click', (e) => {
-                document.querySelectorAll('.postEdit').forEach(editButton => {
+            document.querySelectorAll('.postEdit').forEach(editButton => {
+                editButton.addEventListener('click', (e) => {
+                    document.querySelectorAll('.postEdit').forEach(editButton => {
+                        const postContent = editButton.closest('.post-header').nextElementSibling;
+                        const paragraph = postContent.querySelector('p');
+                        paragraph.setAttribute('contenteditable', false);
+                    });
+                    e.stopPropagation();
                     const postContent = editButton.closest('.post-header').nextElementSibling;
                     const paragraph = postContent.querySelector('p');
-                    paragraph.setAttribute('contenteditable', false);
+                    paragraph.classList = 'post-edit-style';
+                    const isEditable = paragraph.getAttribute('contenteditable') === 'true';
+                    paragraph.setAttribute('contenteditable', !isEditable);
+                    if (!isEditable) {
+                        paragraph.focus(); // Focus the paragraph to start editing
+                    }
+                });
             });
-                e.stopPropagation();
-                const postContent = editButton.closest('.post-header').nextElementSibling;
-                const paragraph = postContent.querySelector('p');
-                paragraph.classList = 'post-edit-style';
-                const isEditable = paragraph.getAttribute('contenteditable') === 'true';
-                paragraph.setAttribute('contenteditable', !isEditable);
-                if (!isEditable) {
-                    paragraph.focus(); // Focus the paragraph to start editing
-                }
-            });
-        });
 
-        document.querySelectorAll('.postDel').forEach(deleteButton => {
-            deleteButton.addEventListener('click', () => {
-                const post = deleteButton.closest('.post');
-                if (post) {
-                    post.remove();
-                }
+            document.querySelectorAll('.postDel').forEach(deleteButton => {
+                deleteButton.addEventListener('click', () => {
+                    const post = deleteButton.closest('.post');
+                    if (post) {
+                        fetch('./deletePost', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ postId: post.id })
+                        }).then(res => res.json())
+                            .then(res => {
+                                if (res.success) {
+                                post.remove();
+                                }
+                                else if (res.error) {
+                                    alert(res.error);
+                                }
+                            }).catch(error => {
+                                console.log(error);
+                            });    
+                    }
+                });
             });
-        });
-
+        }
+        // attachedEditEvent();
         //Post Uploading
-        document.getElementById('post-image-uploader').addEventListener('click', function() {
+        document.getElementById('post-image-uploader').addEventListener('click', function () {
             document.getElementById('fileImageInput').click();
         });
-        
+
         let postImgFile;
 
-        document.getElementById('fileImageInput').addEventListener('change', function(event) {
+        document.getElementById('fileImageInput').addEventListener('change', function (event) {
             postImgFile = event.target.files[0];
             if (postImgFile) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const preview = document.getElementById('preview');
                     preview.src = e.target.result;
                     preview.style.display = 'block';
@@ -212,32 +231,32 @@ else if(window.location.pathname === '/home'){
             }
         });
 
-        document.querySelector('.post-upload').addEventListener('click',(e)=>{
+        document.querySelector('.post-upload').addEventListener('click', (e) => {
             e.preventDefault();
             const postContent = document.getElementById('post-content').value;
             const formData = new FormData();
             formData.append('postContent', postContent);
             formData.append('Postfile', postImgFile);
-            fetch('./uploadPost',{
+            fetch('./uploadPost', {
                 method: 'POST',
                 body: formData
-            }).then(res=>res.json())
-            .then(res=>{
-                console.log(res);
-                if(res.success){
-                    const preview = document.getElementById('preview');
-                    preview.style.display = 'none';
-                    const postBox = document.querySelector('.post-box');
-                    const newPost = document.createElement('div');
-                    newPost.classList.add('post');
-                    newPost.id = res.newPost.id;;
-                    newPost.innerHTML = `
+            }).then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        document.getElementById('post-content').value = '';
+                        const preview = document.getElementById('preview');
+                        preview.style.display = 'none';
+                        const postBox = document.querySelector('.post-box');
+                        const newPost = document.createElement('div');
+                        newPost.classList.add('post');
+                        newPost.id = res.newPost.id;
+                        newPost.innerHTML = `
                     <div class="post-header">
                     <div>
                         <img src="images/profilePic.png" alt="John Carter" class="post-user-img">
                         <section>
                             <h4>${res.newPost.userName}</h4>
-                            <p>${res.newPost.time}</p>
+                            <p class="time-difference" data-created-at="${res.newPost.time}">${timeDifference(res.newPost.time)}</p>
                         </section>
                     </div>
                     <div>
@@ -255,18 +274,9 @@ else if(window.location.pathname === '/home'){
                     <img src="/images/postUploadFile/${res.newPost.fileName}" alt="Post Image" class="post-img">
                 </div>
                 <div class="post-footer">
-                    <div class="like"><span>
-                            <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M5.62436 4.4241C3.96537 5.18243 2.75 6.98614 2.75 9.13701C2.75 11.3344 3.64922 13.0281 4.93829 14.4797C6.00072 15.676 7.28684 16.6675 8.54113 17.6345C8.83904 17.8642 9.13515 18.0925 9.42605 18.3218C9.95208 18.7365 10.4213 19.1004 10.8736 19.3647C11.3261 19.6292 11.6904 19.7499 12 19.7499C12.3096 19.7499 12.6739 19.6292 13.1264 19.3647C13.5787 19.1004 14.0479 18.7365 14.574 18.3218C14.8649 18.0925 15.161 17.8642 15.4589 17.6345C16.7132 16.6675 17.9993 15.676 19.0617 14.4797C20.3508 13.0281 21.25 11.3344 21.25 9.13701C21.25 6.98614 20.0346 5.18243 18.3756 4.4241C16.7639 3.68739 14.5983 3.88249 12.5404 6.02065C12.399 6.16754 12.2039 6.25054 12 6.25054C11.7961 6.25054 11.601 6.16754 11.4596 6.02065C9.40166 3.88249 7.23607 3.68739 5.62436 4.4241ZM12 4.45873C9.68795 2.39015 7.09896 2.10078 5.00076 3.05987C2.78471 4.07283 1.25 6.42494 1.25 9.13701C1.25 11.8025 2.3605 13.836 3.81672 15.4757C4.98287 16.7888 6.41022 17.8879 7.67083 18.8585C7.95659 19.0785 8.23378 19.292 8.49742 19.4998C9.00965 19.9036 9.55954 20.3342 10.1168 20.6598C10.6739 20.9853 11.3096 21.2499 12 21.2499C12.6904 21.2499 13.3261 20.9853 13.8832 20.6598C14.4405 20.3342 14.9903 19.9036 15.5026 19.4998C15.7662 19.292 16.0434 19.0785 16.3292 18.8585C17.5898 17.8879 19.0171 16.7888 20.1833 15.4757C21.6395 13.836 22.75 11.8025 22.75 9.13701C22.75 6.42494 21.2153 4.07283 18.9992 3.05987C16.901 2.10078 14.3121 2.39015 12 4.45873Z"
-                                        fill="#1C274C"></path>
-                                </g>
-                            </svg>
-                        </span>${res.newPost.likes}</div>
+                    <div class="like" >
+                            <img src="images/like.svg" alt="like" class="like-img" onclick="toggleLike(${res.newPost.id},event)"/>
+                        <b>${res.newPost.likes}</b></div>
                     <div class="comment"> <span>
                             <svg width="24px" height="24px" viewBox="0 0 32 32" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -288,7 +298,7 @@ else if(window.location.pathname === '/home'){
                                     </g>
                                 </g>
                             </svg>
-                        </span>${res.newPost.comments}</div>
+                        </span><b>${res.newPost.comments}</b></div>
                     <div class="share"> <span>
                             <svg fill="#000000" width="24px" height="24px" viewBox="0 0 16 16" id="share-16px"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -300,18 +310,83 @@ else if(window.location.pathname === '/home'){
                                         transform="translate(23 -0.001)"></path>
                                 </g>
                             </svg>
-                        </span>${res.newPost.share}</div>
+                        </span><b>${res.newPost.share}</b></div>
                     <input type="text" placeholder="Write your comment" class="comment-input">
                 </div>`;
-                postBox.insertAdjacentElement('afterend',newPost);
-                }
-                else if(res.error){
-                    alert(res.error);
-                }
-            }).catch(error=>{
-                console.log(error);
-            })
-        })
+                        postBox.insertAdjacentElement('afterend', newPost);
+                        attachedEditEvent();
+                        updateTimeDifference();
+                    }
+                    else if (res.error) {
+                        alert(res.error);
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+        });
+        function timeDifference(createdAt) {
+            const now = Date.now();
+            const diff = now - createdAt;
+
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            if (seconds < 60) {
+                return 'now';
+            } else if (minutes < 60) {
+                return `${minutes} minutes ago`;
+            } else if (hours < 24) {
+                return `${hours} hours ago`;
+            } else {
+                return `${days} days ago`;
+            }
+        }
+        function updateTimeDifference() {
+            const timeElements = document.querySelectorAll('.time-difference');
+            timeElements.forEach(element => {
+                const createdAt = element.getAttribute('data-created-at');
+                element.textContent = timeDifference(Number(createdAt));
+            });
+        }
+        // Update the time difference every minute (60000 milliseconds)
+        setInterval(updateTimeDifference, 60000);
+
+        // Call updateTimeDifference immediately to set the initial time difference
+        // updateTimeDifference();
+
+
         
+    });
+    document.querySelector('.logoutCont').addEventListener('click', e => {
+        e.stopPropagation();
+        document.querySelector('.logOutIcon').style.display = 'block';
+    });
+    document.querySelector('.logOutIcon').addEventListener('click', e => {
+        window.location.href = '/logout';
+    });
+}
+
+function toggleLike(postId,event){
+    console.log(event)
+    const likeCount = event.currentTarget.nextElementSibling;
+    fetch('./togglePostLike', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({postId})
+    }).then(res => res.json())
+    .then(res => {
+        if(res.action){
+            likeCount.textContent = res.like;
+            event.target.src = 'images/liked.svg';  
+        }else {
+            likeCount.textContent = res.like;
+            event.target.src = 'images/like.svg'; 
+        }
+    }).catch(error => {
+        console.log(error);
     });
 }

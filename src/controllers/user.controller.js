@@ -44,4 +44,9 @@ export default class UserController {
         }
 
     }
+    logout(req, res) {
+        res.clearCookie('jwtToken');
+        res.clearCookie('userName');
+        res.redirect('/');
+    }
 }

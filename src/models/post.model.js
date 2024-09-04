@@ -6,7 +6,7 @@ export default class PostModel {
         this.fileName = fileName;
         this.userName = userName;
         this.likes = 0;
-        this.comments = [];
+        this.comments = 0;
         this.share = 0;
     }
     static fetchAllPosts() {
